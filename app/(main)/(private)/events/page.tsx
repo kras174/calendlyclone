@@ -1,11 +1,11 @@
 import { CalendarPlus, CalendarRange } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import EventCard from '@/components/cards/EventCard';
 import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { getEvents } from '@/server/actions/events';
 
-// import EventCard from '@/components/cards/EventCard';
 export default async function EventsPage() {
   const { userId, redirectToSignIn } = await auth();
 
@@ -32,8 +32,7 @@ export default async function EventsPage() {
       {events.length > 0 ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-10">
           {events.map((event) => (
-            <div>{event.name}</div>
-            // <EventCard key={event.id} {...event} />
+            <EventCard key={event.id} {...event} />
           ))}
         </div>
       ) : (
