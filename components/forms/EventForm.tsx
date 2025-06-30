@@ -20,6 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form';
+import { createEvent, deleteEvent, updateEvent } from '@/server/actions/events';
 
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -32,20 +33,6 @@ import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-// import { createEvent, deleteEvent, updateEvent } from '@/server/actions/events';
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default function EventForm({
   event,
@@ -76,15 +63,15 @@ export default function EventForm({
   });
 
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    // const action = event == null ? createEvent : updateEvent.bind(null, event.id);
-    // try {
-    //   await action(values);
-    //   router.push('/events');
-    // } catch (error: any) {
-    //   form.setError('root', {
-    //     message: `There was an error saving your event ${error.message}`,
-    //   });
-    // }
+    const action = event == null ? createEvent : updateEvent.bind(null, event.id);
+    try {
+      await action(values);
+      router.push('/events');
+    } catch (error: any) {
+      form.setError('root', {
+        message: `There was an error saving your event ${error.message}`,
+      });
+    }
   }
 
   return (
@@ -184,7 +171,7 @@ export default function EventForm({
                     onClick={() => {
                       startDeleteTransition(async () => {
                         try {
-                          // await deleteEvent(event.id);
+                          await deleteEvent(event.id);
                           router.push('/events');
                         } catch (error: any) {
                           form.setError('root', {
